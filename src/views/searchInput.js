@@ -1,10 +1,13 @@
 export default {
 	data(){
 		return {
-		        
+		        input:''
 		      };
 	},
 	methods:{
+		external(){
+			return this.$parent.$parent.$parent
+			},
 		querySearch(queryString, cb) {
 			var links = this.links;
 			var results = queryString ? links.filter(this.createFilter(queryString)) : links;
@@ -28,13 +31,19 @@ export default {
 		   ];
 		},
 		handleSelect(item) {
+			var self = this;
 		  console.log(item);
+		  console.log('handleSelect self:', self);
 		},
 		handleIconClick(e){
 			console.log('handleIconClick:',e);
 		},
 		startHacking(e){
+			var self = this;
 			console.log('startHacking:',e);
+			console.log('startHacking self:', self);
+			console.log('startHacking external:', self.external().$refs.mytags);
+			self.external().$refs.mytags.tosearch();
 		}
 	},
 	mounted(){

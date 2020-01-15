@@ -32,7 +32,7 @@ export default {
 	mounted(){
 		var retain = 100;
 		var orderHight = document.documentElement.clientHeight;
-		document.getElementById('data_container').style.height = (orderHight-151-retain) + 'px';
+		// document.getElementById('data_container').style.height = (orderHight-151-retain) + 'px';
 		// console.log('data_container:',document.getElementById('data_container'));
 		// console.log('container h:',orderHight-151);
 	}

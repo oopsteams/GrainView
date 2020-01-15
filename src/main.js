@@ -5,7 +5,7 @@ import App from './App.vue'
 
 Vue.use(ElementUI)
 
-new Vue({
+const vm = new Vue({
   el: '#app',
   render: h => h(App)
 })

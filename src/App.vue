@@ -27,7 +27,8 @@
 		mounted: funs.mounted
 	}
 </script>
-<style scoped src="./assets/main.css"></style>
+<!-- <style scoped src="./assets/main.css"></style> -->
+<style src="./assets/main.css"></style>
 <style>
 #app {
   font-family: Helvetica, sans-serif;

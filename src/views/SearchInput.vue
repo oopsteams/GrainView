@@ -1,23 +1,8 @@
 <template>
-	<span>
-	<el-autocomplete
-			  popper-class="my-autocomplete"
-			  v-model="state"
-			  :fetch-suggestions="querySearch"
-			  placeholder="Please input"
-			  @select="handleSelect">
-			  <i
-			    class="el-icon-edit el-input__icon"
-			    slot="suffix"
-			    @click="handleIconClick">
-			  </i>
-			  <template slot-scope="{ item }">
-			    <div class="value">{{ item.value }}</div>
-			    <span class="link">{{ item.link }}</span>
-			  </template>
-			  
-	</el-autocomplete>
-	<el-button @click="startHacking" style="margin-right:40px;">Search</el-button>
+	<span style="float: left;">
+	<el-input ref="sinput" placeholder="请输入关键词" v-model="input" clearable class="common-input" style="width: 540px;">
+	    <el-button slot="append" icon="el-icon-search" @click="startHacking"></el-button>
+	</el-input>
 	</span>
 	
 </template>

@@ -1,7 +1,7 @@
 {
   "name": "element-starter",
   "description": "A Vue.js project",
-  "author": "yi.shyang@ele.me",
+  "author": "oops@oopsteam.com",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --hot --env.dev",
@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "element-ui": "^2.3.4",
-    "vue": "^2.5.16"
+    "vue": "^2.5.16",
+    "axios": "^0.19.1"
   },
   "engines": {
     "node": ">=6"
