@@ -17,7 +17,9 @@ export default {
 			self.external().$refs.mytags.tosearch();
 		},
 		handleSelect(e){
-			self.external().$refs.mytags.tosearch();
+			var self = this;
+			//必须异步
+			setTimeout(()=>{self.external().$refs.mytags.tosearch();},300);
 		}
 	},
 	mounted(){

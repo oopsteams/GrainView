@@ -1,3 +1,8 @@
+#app {
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  font-size: 1.6rem;
+}
 .my-autocomplete {
     li {
       line-height: normal;
@@ -8,12 +13,46 @@
         overflow: hidden;
       }
       .link {
-        font-size: 12px;
+        font-size: 1.6rem;
         color: #b4b4b4;
       }
     }
   }
 .common-input {
-	width:240px;
-	font-size: 14px;
+	width:15rem;
+	font-size: 1.6rem;
+}
+.el-tag,.el-table,.el-pager li,.el-dropdown-menu__item,.el-icon,.el-select-dropdown__item, .el-button--mini, .el-button--small{
+	font-size: 1.6rem;
+}
+.el-pagination .btn-next .el-icon, .el-pagination .btn-prev .el-icon{
+	font-size: 1.6rem;
+}
+.el-tag, .el-select-dropdown__item{
+	height: 3rem;
+	line-height: 2.875rem;
+}
+.el-pagination button, .el-pager li{
+	height: 2.5rem;
+	line-height: 2.375rem;
+	min-width: 2.5rem;
+}
+.el-pagination.is-background .btn-next, .el-pagination.is-background .btn-prev, .el-pagination.is-background .el-pager li{
+	min-width: 2.5rem;
+}
+.el-input__inner{
+	height: 3.75rem;
+	line-height: 3.75rem;
+}
+.el-header {
+	background-color: #B3C0D1;
+	color: #333;
+	line-height: 3.85rem;
+	height: 3.85rem;
+}
+.btn_boder {
+	border-bottom:1px solid;
+}
+.el-aside {
+	color: #333;
 }

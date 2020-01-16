@@ -45,7 +45,7 @@ export default {
 							self.external().$set(self.external().tableData,idx,item);
 						});
 						self.external().total = res.data.total;
-						
+						self.external().pageSize = res.data.pagesize;
 					}
 				},()=>{
 					console.log('请求失败!');
