@@ -21,21 +21,30 @@ export default {
 			}
 			var tagname  = tag.name;
 			var keyword = self.external().$refs.searchinput.$refs.sinput.$refs.input.value;
-			var params={kw:keyword, tag:tagname}
+			console.log('container:', self.external());
+			var source_val = self.external().$refs.searchinput.$refs.soptions.value
+			var pg = self.external().currentPage - 1;
+			if(pg<0)pg=0;
+			var params={kw:keyword, tag:tagname, source:source_val, page:pg}
 			var load_items = ()=>{
 				axios.get('/open/se',{params:params}).then((res)=>{
 					console.log('res:', res);
 					if(res.data){
-						// console.log('data:',res.data);
+						console.log('data:',res.data);
+						
 						self.external().tableData = [];
 						res.data.data.forEach((d, idx)=>{
 							var item = {
 								name: d.filename,
 								path: d.path,
-								source:d.source
+								source:d.source?d.source:'local',
+								dir:d.isdir,
+								fs_id:d.fs_id
 							  }
+							 // console.log('item:', item);
 							self.external().$set(self.external().tableData,idx,item);
 						});
+						self.external().total = res.data.total;
 						
 					}
 				},()=>{
