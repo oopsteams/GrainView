@@ -63,6 +63,7 @@ export default {
 				self.tags.forEach((t, _idx)=>{if(t.type!=''){t.type = '';self.$set(self.tags,_idx,t);}})
 				self.tags[idx].type = 'success';
 				self.$set(self.tags,idx,self.tags[idx]);
+				self.external().currentPage = 1;
 				self.tosearch();
 			}
 		}
