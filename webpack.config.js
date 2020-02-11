@@ -6,8 +6,9 @@ const publicPath = ''
 
 module.exports = (options = {}) => ({
   entry: {
-    vendor: './src/vendor',
-    index: './src/main.js'
+    // vendor: './src/vendor',
+    index: './src/main.js',
+	user: './src/user.js'
   },
   output: {
     path: resolve(__dirname, 'dist'),
@@ -45,6 +46,11 @@ module.exports = (options = {}) => ({
       names: ['vendor', 'manifest']
     }),
     new HtmlWebpackPlugin({
+      template: 'src/index.html'
+    }),
+    new HtmlWebpackPlugin({
+	  filename: 'user.html',
+	  chunks:['manifest', 'vendor', 'user'],
       template: 'src/index.html'
     })
   ],

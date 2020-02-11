@@ -1,4 +1,4 @@
-#app {
+#app, .container{
   font-family: Helvetica, sans-serif;
   text-align: center;
   font-size: 1.6rem;
@@ -31,6 +31,11 @@
 .el-tag, .el-select-dropdown__item{
 	height: 3rem;
 	line-height: 2.875rem;
+	cursor: pointer;
+}
+.el-breadcrumb{
+	height: 3rem;
+	line-height: 2.875rem;
 }
 .el-pagination button, .el-pager li{
 	height: 2.5rem;
@@ -55,4 +60,10 @@
 }
 .el-aside {
 	color: #333;
+}
+.el-transfer div{
+	text-align: initial;
+}
+.el-transfer-panel__body .el-transfer-panel__item{
+	display: block!important;
 }

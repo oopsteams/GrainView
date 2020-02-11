@@ -24,8 +24,9 @@ export default {
 			console.log('container:', self.external());
 			var source_val = self.external().$refs.searchinput.$refs.soptions.value
 			var pg = self.external().currentPage - 1;
+			var sub_dir = self.external().sub_dir;
 			if(pg<0)pg=0;
-			var params={kw:keyword, tag:tagname, source:source_val, page:pg}
+			var params={kw:keyword, tag:tagname, source:source_val, page:pg, path_tag:sub_dir}
 			var load_items = ()=>{
 				axios.get('/open/se',{params:params}).then((res)=>{
 					console.log('res:', res);
@@ -37,6 +38,7 @@ export default {
 							var item = {
 								name: d.filename,
 								path: d.path,
+								tags: d.path.split('/'),
 								source:d.source?d.source:'local',
 								dir:d.isdir,
 								fs_id:d.fs_id
@@ -63,7 +65,7 @@ export default {
 				self.tags.forEach((t, _idx)=>{if(t.type!=''){t.type = '';self.$set(self.tags,_idx,t);}})
 				self.tags[idx].type = 'success';
 				self.$set(self.tags,idx,self.tags[idx]);
-				self.external().currentPage = 1;
+				self.external().reset_base_vars();
 				self.tosearch();
 			}
 		}

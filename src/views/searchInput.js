@@ -2,7 +2,7 @@ export default {
 	data(){
 		return {
 		        input:'',
-				select:''
+				select:'local'
 		      };
 	},
 	methods:{
@@ -14,14 +14,14 @@ export default {
 			console.log('startHacking:',e);
 			// console.log('startHacking self:', self);
 			// console.log('startHacking external:', self.external());
-			self.external().currentPage = 1;
+			self.external().reset_base_vars();
 			self.external().$refs.mytags.tosearch();
 		},
 		handleSelect(e){
 			var self = this;
 			//必须异步
 			setTimeout(()=>{
-				self.external().currentPage = 1;
+				self.external().reset_base_vars();
 				self.external().$refs.mytags.tosearch();
 			},300);
 		}
