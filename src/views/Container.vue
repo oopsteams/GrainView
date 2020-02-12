@@ -1,6 +1,6 @@
 <template>
 	  <el-container v-loading.fullscreen.lock="fullscreenLoading">
-		<el-header style="height:4rem;text-align: left; font-size: 24px">
+		<el-header class="el-special-header" style="height:auto;min-height:4rem;text-align: left; font-size: 24px">
 			<selfTag ref="mytags"></selfTag>
 		</el-header>
 	    <el-header style="height:4rem; text-align: right; font-size: 24px">
@@ -42,7 +42,7 @@
 			</el-table-column>
 			<el-table-column prop="name" label="描述" width="260">
 			</el-table-column>
-			<el-table-column fixed="right" label="操作" width="120">
+			<el-table-column fixed="right" label="操作" width="140">
 				<template slot-scope="scope">
 					<el-button v-if="scope.row.dir==0" @click="handleclick(scope.row)" type="text" size="small">获取</el-button>
 					<el-button v-else @click="showcontact(scope.row)" type="text" size="small">获取方式</el-button>

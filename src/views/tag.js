@@ -19,7 +19,7 @@ export default {
 					break;
 				}
 			}
-			var tagname  = tag.name;
+			var tagname  = tag.r;
 			var keyword = self.external().$refs.searchinput.$refs.sinput.$refs.input.value;
 			console.log('container:', self.external());
 			var source_val = self.external().$refs.searchinput.$refs.soptions.value
@@ -81,7 +81,11 @@ export default {
 					if(res.data){
 						for(var i=0;i<res.data.length;i++){
 							var tag_obj = res.data[i];
-							var tag = {name: tag_obj.tag.name, type:'', id:tag_obj.tag_id, idx:i}
+							var r = tag_obj.tag.name;
+							if(tag_obj.tag.rule.length>0){
+								r = tag_obj.tag.rule;
+							}
+							var tag = {name: tag_obj.tag.name, r: r, type:'', id:tag_obj.tag_id, idx:i}
 							if(i==0){
 								tag.type = 'success';
 							}

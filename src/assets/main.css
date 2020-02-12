@@ -55,6 +55,9 @@
 	line-height: 3.85rem;
 	height: 3.85rem;
 }
+.el-special-header {
+	height: auto;
+}
 .btn_boder {
 	border-bottom:1px solid;
 }
