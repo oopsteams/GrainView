@@ -1,7 +1,9 @@
 const axios = require('axios');
+const utils = require('../utils.js');
 export default {
 	data(){
 		return {
+			tk:'',
 			role:{},
 			roles:[],
 			refs:[]
@@ -17,7 +19,7 @@ export default {
 			var params = {'id':id}
 			var load_items = ()=>{
 				
-				axios.get('/user/role_detail',{params:params}).then((res)=>{
+				axios.get('/user/role_detail?tk='+self.tk,{params:params}).then((res)=>{
 					console.log('res:', res);
 					if(res.data){
 						console.log('data:',res.data);
@@ -47,6 +49,7 @@ export default {
 	},
 	mounted(){
 		var self = this;
+		self.tk = utils.GetQueryString('tk');
 		self.reload_items(self.$route.params.id);
 	}
 }

@@ -6,6 +6,7 @@
 		  :data-id="tag.id"
 		  :data-idx="tag.idx"
 		  @click="tagclick"
+		  size="mini"
 		  :type="tag.type">
 		  {{tag.name}}
 		</el-tag>

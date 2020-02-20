@@ -1,7 +1,9 @@
 const axios = require('axios');
+const utils = require('../utils.js');
 export default {
 	data(){
 		return {
+			tk:'',
 			currentPage:1,
 			pageSize:1,
 			total:1,
@@ -44,7 +46,7 @@ export default {
 			var self = this;
 			var save_item = (params)=>{
 				axios.post(
-				'/user/new_org',
+				'/user/new_org?tk='+self.tk,
 				params,
 				{headers:{'Content-Type':'application/json'}},
 				).then((res)=>{
@@ -79,7 +81,7 @@ export default {
 			if(pg<0)pg=0;
 			var params = {page:pg}
 			var load_items = ()=>{
-				axios.get('/user/org_list',{params:params}).then((res)=>{
+				axios.get('/user/org_list?tk='+self.tk,{params:params}).then((res)=>{
 					console.log('res:', res);
 					if(res.data){
 						console.log('data:',res.data);
@@ -114,13 +116,13 @@ export default {
 	},
 	mounted(){
 		var self = this;
-		var self = this;
 		window.onresize = function(){
 			self.maxHeight = document.documentElement.clientHeight - 100 - 100;
 		};
 		setTimeout(()=>{
 			self.maxHeight = document.documentElement.clientHeight - 100 - 100;
 		}, 100);
+		self.tk = utils.GetQueryString('tk');
 		self.reload_items();
 	}
 }

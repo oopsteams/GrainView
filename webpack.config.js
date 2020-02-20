@@ -45,11 +45,11 @@ module.exports = (options = {}) => ({
     new webpack.optimize.CommonsChunkPlugin({
       names: ['vendor', 'manifest']
     }),
+    // new HtmlWebpackPlugin({
+    //   template: 'src/index.html'
+    // }),
     new HtmlWebpackPlugin({
-      template: 'src/index.html'
-    }),
-    new HtmlWebpackPlugin({
-	  filename: 'user.html',
+	  filename: 'index.html',
 	  chunks:['manifest', 'vendor', 'user'],
       template: 'src/index.html'
     })

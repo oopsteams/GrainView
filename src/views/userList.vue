@@ -10,7 +10,7 @@
 			<el-dropdown-item command="org">组织管理</el-dropdown-item>
 	      </el-dropdown-menu>
 	    </el-dropdown>
-	    <span>Tom</span>
+	    <span></span>
 	  </el-header>
 	  
 	  <el-main style="text-align: left;">

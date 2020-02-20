@@ -7,6 +7,7 @@ export default {
 			total:100,
 			fullscreenLoading: false,
 			sub_dir:'',
+			qr:'',
 			tableData: []
 		}
 	},
@@ -40,23 +41,41 @@ export default {
 				this.$refs.mytags.tosearch()
 			}
 		},
-		open_alert(msg, iserr){
-			this.$alert(msg, iserr?'注意':'请复制信息', 
+		open_alert(msg, iserr, _t, txt){
+			var self = this;
+			var _msg = msg;
+			var use_html = false;
+			if(this.qr){
+				_msg = '<span class="common-font">'+msg+'</span><br><span>联系方式:</span><br><span><img width="256px" height="256px" src="'+this.qr+'"/></span>';
+				use_html = true;
+			}
+			var re_copy_msg = false;
+			
+			if(!_t){
+				_t = '请复制信息';
+				re_copy_msg = true;
+			}
+			self.doCopy(txt);
+			this.$alert(_msg, iserr?'注意':_t, 
 			{
-				confirmButtonText: '确定',
+				dangerouslyUseHTMLString:use_html,
+				confirmButtonText: '复制',
 				callback: action => {
 			            this.$message({
 			              type: 'info',
 			              message: `注意: 禁止随意传播!`
 			            });
+						//if(re_copy_msg){self.doCopy(txt);}
+						self.doCopy(txt);
 			          }
 			});
 		},
 		showcontact(item){
 			var self = this;
 			if(item){
-				self.open_alert("请联系资源管理员:张老师", false);
-				self.doCopy(item.path+item.name);
+				var info = '['+item.app_name+']'+item.path+item.name
+				self.open_alert("<span>"+info + "</span><br>请联系资源管理员:张老师", false, "获取方式", info);
+				// self.doCopy(info);
 			}
 		},
 		handleclick(item){
@@ -72,8 +91,8 @@ export default {
 					if(res.data.hasOwnProperty('err')){
 						self.open_alert(res.data.err, true)
 					} else if(res.data.hasOwnProperty('info')){
-						self.doCopy(res.data.info);
-						self.open_alert(res.data.info, false)
+						self.open_alert(res.data.info, false, "请复制信息", res.data.info)
+						
 					}
 				}
 			},()=>{console.log('请求失败!');})

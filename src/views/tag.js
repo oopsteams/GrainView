@@ -19,7 +19,10 @@ export default {
 					break;
 				}
 			}
-			var tagname  = tag.r;
+			var tagname  = '';
+			if(tag){
+				tagname  = tag.r;
+			}
 			var keyword = self.external().$refs.searchinput.$refs.sinput.$refs.input.value;
 			console.log('container:', self.external());
 			var source_val = self.external().$refs.searchinput.$refs.soptions.value
@@ -41,7 +44,9 @@ export default {
 								tags: d.path.split('/'),
 								source:d.source?d.source:'local',
 								dir:d.isdir,
-								fs_id:d.fs_id
+								fs_id:d.fs_id,
+								app_name:d.app_name,
+								pin:d.pin
 							  }
 							 // console.log('item:', item);
 							self.external().$set(self.external().tableData,idx,item);
@@ -67,6 +72,10 @@ export default {
 				self.$set(self.tags,idx,self.tags[idx]);
 				self.external().reset_base_vars();
 				self.tosearch();
+			} else {
+				self.tags.forEach((t, _idx)=>{if(t.type!=''){t.type = '';self.$set(self.tags,_idx,t);}})
+				self.external().reset_base_vars();
+				self.tosearch();
 			}
 		}
 	},
@@ -79,8 +88,10 @@ export default {
 				axios.get(point+'/open/init').then((res)=>{
 					console.log('res:', res);
 					if(res.data){
-						for(var i=0;i<res.data.length;i++){
-							var tag_obj = res.data[i];
+						self.external().qr = res.data.contact;
+						let data_list = res.data.data;
+						for(var i=0;i<data_list.length;i++){
+							var tag_obj = data_list[i];
 							var r = tag_obj.tag.name;
 							if(tag_obj.tag.rule.length>0){
 								r = tag_obj.tag.rule;

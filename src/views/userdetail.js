@@ -1,7 +1,9 @@
 const axios = require('axios');
+const utils = require('../utils.js');
 export default {
 	data(){
 		return {
+			tk:'',
 			currentPage:1,
 			pageSize:1,
 			total:1,
@@ -46,25 +48,6 @@ export default {
 		patchclick(item){
 			console.log("patchclick item:", item);
 		},
-		handleclick(item){
-			var self = this;
-			console.log("item:", item);
-			console.log("handleclick self:", self);
-			var params = {fs_id:item.fs_id}
-			self.fullscreenLoading = true;
-			axios.get('/open/shared',{params:params}).then((res)=>{
-				if(res.data){
-					self.fullscreenLoading = false;
-					console.log('data:',res.data);
-					if(res.data.hasOwnProperty('err')){
-						self.open_alert(res.data.err, true)
-					} else if(res.data.hasOwnProperty('info')){
-						self.doCopy(res.data.info);
-						self.open_alert(res.data.info, false)
-					}
-				}
-			},()=>{console.log('请求失败!');})
-		},
 		handleCurrentChange(val){
 			console.log('handleCurrentChange val:', val);
 			this.$refs.mytags.tosearch()
@@ -74,7 +57,7 @@ export default {
 			var params = {'id':id}
 			var load_items = ()=>{
 				
-				axios.get('/user/user_detail',{params:params}).then((res)=>{
+				axios.get('/user/user_detail?tk='+self.tk,{params:params}).then((res)=>{
 					console.log('res:', res);
 					if(res.data){
 						console.log('data:',res.data);
@@ -91,6 +74,7 @@ export default {
 	},
 	mounted(){
 		var self = this;
+		self.tk = utils.GetQueryString('tk');
 		self.reload_items(self.$route.params.id);
 	}
 }

@@ -8,7 +8,7 @@
 	        <el-dropdown-item command="new">新建组织</el-dropdown-item>
 	      </el-dropdown-menu>
 	    </el-dropdown>
-	    <span>Tom</span>
+	    <span></span>
 	  </el-header>
 	<el-main style="text-align: left;">
 				<el-pagination

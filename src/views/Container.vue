@@ -3,7 +3,7 @@
 		<el-header class="el-special-header" style="height:auto;min-height:4rem;text-align: left; font-size: 24px">
 			<selfTag ref="mytags"></selfTag>
 		</el-header>
-	    <el-header style="height:4rem; text-align: right; font-size: 24px">
+	    <el-header style="height:auto;min-height:4rem; text-align: right; font-size: 24px">
 			<searchInput ref="searchinput"></searchInput>
 	      <!-- <el-dropdown>
 	        <i class="el-icon-setting" style="margin-right: 15px"></i>
@@ -35,7 +35,7 @@
 				<template slot-scope="scope">
 					<el-breadcrumb separator="/">
 					  <el-breadcrumb-item v-for="tag in scope.row.tags" :key="tag">
-						  <el-tag v-if="tag.length>0" @click="click_sub_dir" type="success">{{tag}}</el-tag>
+						  <el-tag v-if="tag.length>0" @click="click_sub_dir" :title="scope.row.path" type="success">{{tag}}</el-tag>
 					  </el-breadcrumb-item>
 					</el-breadcrumb>
 				</template>
@@ -44,7 +44,7 @@
 			</el-table-column>
 			<el-table-column fixed="right" label="操作" width="140">
 				<template slot-scope="scope">
-					<el-button v-if="scope.row.dir==0" @click="handleclick(scope.row)" type="text" size="small">获取</el-button>
+					<el-button v-if="scope.row.pin==1 && scope.row.source=='local'" @click="handleclick(scope.row)" type="text" size="small">获取</el-button>
 					<el-button v-else @click="showcontact(scope.row)" type="text" size="small">获取方式</el-button>
 				</template>
 			</el-table-column>
