@@ -2,7 +2,7 @@ export default {
 	data(){
 		return {
 		        input:'',
-				select:'local'
+				select:'shared'
 		      };
 	},
 	methods:{

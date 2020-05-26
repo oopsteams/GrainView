@@ -23,14 +23,19 @@ export default {
 		var load_datas = ()=>{
 			axios.get('/open/loops').then((res)=>{
 				if(res.data && res.data.hasOwnProperty('sources')){
+					var static_hosts = res.data.hosts;
 					var _fr = res.data.fr;
 					if(_fr>0){
 						self.fr = _fr * 1000;
 					}
 					var sources = res.data.sources;
+					var static_host = '';
+					if(static_hosts && static_hosts.length>0){
+						static_host = static_hosts[0];
+					}
 					for(var i=0;i<sources.length;i++){
 						var item = sources[i];
-						var pos_item = {src: item.srcurl, type:item.type, id:item.id, idx:item.idx}
+						var pos_item = {src: static_host+item.srcurl, type:item.type, id:item.id, idx:item.idx}
 						self.$set(self.items, i, pos_item);
 					}
 				}

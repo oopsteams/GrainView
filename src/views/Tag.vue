@@ -1,15 +1,15 @@
 <template>
 	<div class="block">
-		<el-tag
+		<!-- <el-tag
 		  v-for="tag in tags"
 		  :key="tag.id"
 		  :data-id="tag.id"
 		  :data-idx="tag.idx"
-		  @click="tagclick"
+		  @click.native="tagclick"
 		  size="mini"
 		  :type="tag.type">
 		  {{tag.name}}
-		</el-tag>
+		</el-tag> -->
 	</div>
 </template>
 

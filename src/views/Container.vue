@@ -1,6 +1,9 @@
 <template>
 	  <el-container v-loading.fullscreen.lock="fullscreenLoading">
-		<el-header class="el-special-header" style="height:auto;min-height:4rem;text-align: left; font-size: 24px">
+		<!-- <el-header class="el-special-header" style="height:auto;min-height:4rem;text-align: left; font-size: 24px">
+			<selfTag ref="mytags"></selfTag>
+		</el-header> -->
+		<el-header class="el-special-header" style="height:auto;min-height:2px;text-align: left; font-size: 24px">
 			<selfTag ref="mytags"></selfTag>
 		</el-header>
 	    <el-header style="height:auto;min-height:4rem; text-align: right; font-size: 24px">
@@ -26,21 +29,25 @@
 						:page-size="pageSize"
 			  :total="total">
 			</el-pagination>
-	      <el-table :data="tableData" stripe>
-	        <el-table-column prop="source" label="来源" width="110">
-	        </el-table-column>
+	      <el-table :data="tableData" stripe >
+	        <!-- <el-table-column prop="source" label="来源" width="110">
+	        </el-table-column> -->
 	        <!-- <el-table-column prop="path" label="位置">
 	        </el-table-column> -->
 			<el-table-column label="位置">
 				<template slot-scope="scope">
 					<el-breadcrumb separator="/">
 					  <el-breadcrumb-item v-for="tag in scope.row.tags" :key="tag">
-						  <el-tag v-if="tag.length>0" @click="click_sub_dir" :title="scope.row.path" type="success">{{tag}}</el-tag>
+						  <el-tag v-if="tag.length > 0" @click.native="click_sub_dir(tag, row)" :title="scope.row.path" type="success">{{tag}}</el-tag>
 					  </el-breadcrumb-item>
 					</el-breadcrumb>
 				</template>
 			</el-table-column>
-			<el-table-column prop="name" label="描述" width="260">
+			<el-table-column prop="name" label="描述" width="380">
+				<template slot-scope="scope">
+					<label v-if="scope.row.pin==1" >{{scope.row.name}}</label>
+					<el-tag v-else @click.native="click_parent(scope.row)" :title="scope.row.name" type="success">{{scope.row.name}}</el-tag>
+				</template>
 			</el-table-column>
 			<el-table-column fixed="right" label="操作" width="140">
 				<template slot-scope="scope">

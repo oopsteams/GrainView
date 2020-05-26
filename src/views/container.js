@@ -7,6 +7,7 @@ export default {
 			total:100,
 			fullscreenLoading: false,
 			sub_dir:'',
+			pid: '',
 			qr:'',
 			tableData: []
 		}
@@ -16,6 +17,7 @@ export default {
 			var self = this;
 			self.currentPage = 1;
 			self.sub_dir = '';
+			self.pid = '';
 		},
 		doCopy(msg){
 			this.$copyText(msg).then(function (e) {
@@ -24,14 +26,15 @@ export default {
 				
 			})
 		},
-		click_sub_dir(event){
+		click_sub_dir(tag, row){
 			var self = this;
-			if(self.sub_dir != event.target.innerHTML){
-				self.sub_dir = event.target.innerHTML;
+			if(tag.length>0 && self.sub_dir != tag){
+				self.sub_dir = tag;
 				self.currentPage = 1;
-				this.$refs.mytags.tosearch()
+				self.pid = '';
+				this.$refs.mytags.tosearch();
 			}
-			// console.log('sub_dir:', event.target.innerHTML);
+			console.log('sub_dir:', tag);
 		},
 		clear_sub_dir(){
 			var self = this;
@@ -100,6 +103,16 @@ export default {
 		handleCurrentChange(val){
 			console.log('handleCurrentChange val:', val);
 			this.$refs.mytags.tosearch()
+		},
+		click_parent(row){
+			var self = this;
+			if(row.fs_id && self.pid != row.fs_id){
+				self.reset_base_vars();
+				self.pid = row.fs_id;
+				this.$refs.mytags.tosearch();
+			}
+			// console.log("click_parent parent row:", row);
+			// console.log("row:", row, ",column:", column, ",cell:", cell, ",event:", event);
 		}
 	},
 	mounted(){

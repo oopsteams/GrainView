@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-	 <commonHeader></commonHeader>
+	 <!-- <commonHeader></commonHeader> -->
     <!-- <img src="./assets/logo.png"> -->
     
 	<!-- <selfTag></selfTag> -->
@@ -10,14 +10,14 @@
 </template>
 
 <script>
-	import commonHeader from '~/views/Header.vue'
+	// import commonHeader from '~/views/Header.vue'
 	// import selfTag from '~/views/Tag.vue'
 	// import items from '~/views/Items.vue'
 	import container from '~/views/Container.vue'
 	import funs from './app.js'
 	export default {
 		components:{
-			commonHeader,
+			// commonHeader,
 			// selfTag,
 			// items,
 			container

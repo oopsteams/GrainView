@@ -28,8 +28,9 @@ export default {
 			var source_val = self.external().$refs.searchinput.$refs.soptions.value
 			var pg = self.external().currentPage - 1;
 			var sub_dir = self.external().sub_dir;
+			var pid = self.external().pid;
 			if(pg<0)pg=0;
-			var params={kw:keyword, tag:tagname, source:source_val, page:pg, path_tag:sub_dir}
+			var params={kw:keyword, tag:tagname, source:source_val, page:pg, path_tag:sub_dir, pid:pid}
 			var load_items = ()=>{
 				axios.get('/open/se',{params:params}).then((res)=>{
 					console.log('res:', res);
@@ -62,9 +63,7 @@ export default {
 		},
 		tagclick(e){
 			var self = this;
-			console.log(e);
-			console.log('self:',self);
-			console.log('this:',self.$parent);
+			console.log("tag click:",e);
 			var idx = e.target.dataset.idx;
 			if(self.tags[idx].type != 'success'){
 				self.tags.forEach((t, _idx)=>{if(t.type!=''){t.type = '';self.$set(self.tags,_idx,t);}})
@@ -90,18 +89,18 @@ export default {
 					if(res.data){
 						self.external().qr = res.data.contact;
 						let data_list = res.data.data;
-						for(var i=0;i<data_list.length;i++){
-							var tag_obj = data_list[i];
-							var r = tag_obj.tag.name;
-							if(tag_obj.tag.rule.length>0){
-								r = tag_obj.tag.rule;
-							}
-							var tag = {name: tag_obj.tag.name, r: r, type:'', id:tag_obj.tag_id, idx:i}
-							if(i==0){
-								tag.type = 'success';
-							}
-							self.$set(self.tags, i, tag);
-						}
+						// for(var i=0;i<data_list.length;i++){
+						// 	var tag_obj = data_list[i];
+						// 	var r = tag_obj.tag.name;
+						// 	if(tag_obj.tag.rule.length>0){
+						// 		r = tag_obj.tag.rule;
+						// 	}
+						// 	var tag = {name: tag_obj.tag.name, r: r, type:'', id:tag_obj.tag_id, idx:i}
+						// 	if(i==0){
+						// 		//tag.type = 'success';
+						// 	}
+						// 	self.$set(self.tags, i, tag);
+						// }
 						self.tosearch();
 					}
 				},()=>{
