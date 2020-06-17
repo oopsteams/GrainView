@@ -49,7 +49,8 @@ export default {
 				extorgs:[]
 			},
 			form_rules:{
-				name:[{required: true, message: '请输入账户名', trigger: 'blur'},{
+				name:[{required: true, message: '请输入账户名', trigger: 'blur'},
+				{
 					message: '请输入字母,数字或_',pattern:/^[@_a-zA-Z0-9]+$/g, trigger: 'blur'
 				}],
 				org:[{required: true, message: '请选择组织', trigger: 'change'}],
@@ -189,14 +190,14 @@ export default {
 		handleclick(item){
 			var self = this;
 			console.log("item:", item);
-			var params = {fuzzy_id:item.fuzzy_id}
+			var params = {fuzzy_id:item.fuzzy_id + ''}
 			// self.$router.push({'path': '/detail/'+item.fuzzy_id});
 			// self.$router.push({'path': '/'});
-			self.form['fuzzy_id'] = item._raw.fuzzy_id;
-			self.form['name'] = item.name;
-			self.form['nickname'] = item.nickname;
-			self.form['checkpass'] = self.form['password'] = item._raw.password;
-			self.form['mobile_no'] = item.mobile_no;
+			self.form['fuzzy_id'] = item._raw.fuzzy_id + '';
+			self.form['name'] = item.name + '';
+			self.form['nickname'] = item.nickname + '';
+			self.form['checkpass'] = self.form['password'] = item._raw.password + '';
+			self.form['mobile_no'] = item.mobile_no + '';
 			self.$set(self.form, 'extroles', []);
 			self.$set(self.form, 'extorgs', []);
 			if(item._raw.hasOwnProperty('extroles')){

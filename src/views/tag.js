@@ -10,7 +10,7 @@ export default {
 		external(){
 			return this.$parent.$parent.$parent
 			},
-		tosearch(){
+		tosearch(cb){
 			var self = this;
 			var tag = null;
 			for(var i=0;i<self.tags.length;i++){
@@ -23,24 +23,49 @@ export default {
 			if(tag){
 				tagname  = tag.r;
 			}
-			var keyword = self.external().$refs.searchinput.$refs.sinput.$refs.input.value;
-			console.log('container:', self.external());
+			// var keyword = self.external().$refs.searchinput.$refs.sinput.$refs.input.value;
+			var keyword = self.external().$refs.searchinput.input;
+			// console.log('container:', self.external());
 			var source_val = self.external().$refs.searchinput.$refs.soptions.value
 			var pg = self.external().currentPage - 1;
 			var sub_dir = self.external().sub_dir;
-			var pid = self.external().pid;
+			var pid = null;
+			if(self.external().pid && self.external().pid.length>0){
+				if(self.external().pid.length>0){
+					pid = self.external().pid;
+				}
+			}
+			var patch_item = null;
+			if(!pid && self.external().top_fix_item){
+				patch_item = self.external().top_fix_item;
+			}
 			if(pg<0)pg=0;
 			var params={kw:keyword, tag:tagname, source:source_val, page:pg, path_tag:sub_dir, pid:pid}
 			var load_items = ()=>{
 				axios.get('/open/se',{params:params}).then((res)=>{
 					console.log('res:', res);
 					if(res.data){
-						console.log('data:',res.data);
-						
+						// console.log('data:',res.data);
+						var pos = 0
 						self.external().tableData = [];
+						// console.log('patch_item:', patch_item);
+						// if(patch_item){
+						// 	self.external().tableData.push(patch_item);
+						// 	pos + 1;
+						// }
 						res.data.data.forEach((d, idx)=>{
+							var _name = d.filename;
+							if(!pid){
+								var prefix = d.path;
+								if(d.path.indexOf('02.会员库')>=0){
+									prefix = '[已完结]';
+								}else if(d.path.indexOf('01.文件库')>=0){
+									prefix = '[在更]';
+								}
+								_name = prefix + _name;
+							}
 							var item = {
-								name: d.filename,
+								name: _name,
 								path: d.path,
 								tags: d.path.split('/'),
 								source:d.source?d.source:'local',
@@ -50,13 +75,15 @@ export default {
 								pin:d.pin
 							  }
 							 // console.log('item:', item);
-							self.external().$set(self.external().tableData,idx,item);
+							self.external().$set(self.external().tableData,pos + idx,item);
 						});
 						self.external().total = res.data.total;
 						self.external().pageSize = res.data.pagesize;
 					}
+					if(cb){cb(0);}
 				},()=>{
 					console.log('请求失败!');
+					if(cb){cb(1);}
 				});
 			};
 			load_items();

@@ -7,6 +7,9 @@
 	font-family: Helvetica, sans-serif;
 	font-size: 1.6rem;
 }
+table {
+  width: 100% !important;
+}
 .my-autocomplete {
     li {
       line-height: normal;

@@ -1,6 +1,6 @@
 <template>
 	<span style="float: left;">
-	<el-input ref="sinput" placeholder="请输入关键词" v-model="input" clearable class="common-input" style="width: 600px;">
+	<el-input ref="sinput" placeholder="请输入关键词" @keyup.enter.native="startHacking" v-model="input" clearable class="common-input" style="width: 600px;">
 		<el-select ref="soptions" @change="handleSelect" v-model="select" slot="prepend" placeholder="海量资源" style="width: 180px;">
 			  <!-- <el-option label="资源1" value="local"></el-option> -->
 			  <el-option label="资源" value="shared"></el-option>

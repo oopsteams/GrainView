@@ -18,5 +18,6 @@ export default {
 		  console.log(ev);
 		}
 	},
-	mounted(){}
+	mounted(){
+	}
 }

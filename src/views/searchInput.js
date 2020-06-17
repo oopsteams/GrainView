@@ -14,8 +14,14 @@ export default {
 			console.log('startHacking:',e);
 			// console.log('startHacking self:', self);
 			// console.log('startHacking external:', self.external());
-			self.external().reset_base_vars();
-			self.external().$refs.mytags.tosearch();
+			// self.external().reset_base_vars();
+			
+			self.external().$refs.mytags.tosearch(()=>{
+				self.external().update_uri(self.input);
+			});
+		},
+		clear_search_input(){
+			this.input = '';
 		},
 		handleSelect(e){
 			var self = this;
@@ -27,6 +33,12 @@ export default {
 		}
 	},
 	mounted(){
-		
+		var self = this;
+		this.$nextTick(function () {
+			var kw = self.external().init_keyword;
+			if(kw && kw.length>0){
+				self.input = kw;
+			}
+		});
 	}
 }

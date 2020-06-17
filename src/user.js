@@ -10,6 +10,12 @@ Vue.use(ElementUI)
 Vue.use(VueClipboard)
 Vue.use(VueRouter)
 
+// const VueRouterPush = VueRouter.prototype.push;
+
+// VueRouter.prototype.push = function push (to) {
+// 	return VueRouterPush.call(this, to).catch(err => err)
+// }
+
 import userdetail from './views/userdetail.vue'
 import refrole from './views/refrole.vue'
 import rolelist from './views/roleList.vue'
@@ -19,7 +25,7 @@ const routes = [{ path: '/detail/:id', name: 'detail', component: userdetail },
 { path: '/rolelist', name: 'rolelist', component: rolelist },
 { path: '/orglist', name: 'orglist', component: orglist },
 { path: '/user', name: 'user', component: user },
-{ path: '/', name: 'index', component: index }
+{ path: '/:pid?', name: 'index', component: index }
 ];
 const router = new VueRouter({
   routes
