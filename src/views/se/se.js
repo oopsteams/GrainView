@@ -1,9 +1,67 @@
 const axios = require('axios');
 const min_delay = 300;
+function parsehighlight(values, key) {
+	var vals = [];
+	if (values) {
+		if (key) {
+			values.forEach((vo, idx)=>{
+				if(vo.t == "txt"){
+					var v = vo.v;
+					if(v.length>0){
+						var sub_vals = v.split(key);
+						if(sub_vals.length>1){
+							for(var i=0;i<sub_vals.length;i++){
+								if(i>0){
+									vals.push({"t":"hl", "v": '<span style="color:red;">' + key + '</span>'});
+								}
+								vals.push({"t":"txt", "v": sub_vals[i]});
+							}
+						} else {
+							vals.push(vo);
+						}
+					}
+				} else {
+					vals.push(vo);
+				}
+			});
+			return vals;
+		}
+	}
+	return values;
+}
+function highlight(value, key) {
+	var vals = [{"t":"txt", "v":value}];
+	if (value) {
+		var html = '';
+		if (key) {
+			var kws = [];
+			var idx = key.indexOf(' ');
+			if(idx>0){
+				kws = key.split(' ');
+			} else {
+				vals = parsehighlight(vals, key);
+				kws = key.split('');
+			}
+			if(kws.length>0){
+				kws.forEach((kw)=>{
+					vals = parsehighlight(vals, kw);
+				});
+			}
+			// console.log(value, "=>", vals);
+			vals.forEach((hv)=>{
+				html +=hv.v;
+			});
+			return html;
+			// return value.split(key).join('<span style="color:red;">' + key + '</span>');
+		}
+	}
+	return value;
+}
 export default {
 	data() {
 		return {
 			trigger_timestamp: 0,
+			pagerCount:5,
 			currentPage: 1,
 			pageSize: 10,
 			total: 10,
@@ -12,10 +70,9 @@ export default {
 			pid: '',
 			qr: '',
 			tableData: [],
-			parent_stack: [],
 			top_fix_item: null,
 			init_keyword: null,
-			table_loading: true
+			table_loading:false
 		}
 	},
 	methods: {
@@ -44,7 +101,7 @@ export default {
 				self.sub_dir = tag;
 				self.currentPage = 1;
 				if(self.pid && self.pid.length>0){
-					self.$router.replace({
+					self.$router.push({
 						'path': '/',
 					});
 				}
@@ -139,56 +196,34 @@ export default {
 		build_parent_params: function(){
 			var self = this;
 			var p_fs_id_list = [];
-			var l = self.parent_stack.length;
-			for(var i=0;i<l;i++){
-				p_fs_id_list.push(self.parent_stack[i].fs_id);
-			}
+			// var l = self.parent_stack.length;
+			// for(var i=0;i<l;i++){
+			// 	p_fs_id_list.push(self.parent_stack[i].fs_id);
+			// }
 			if(p_fs_id_list.length>0){
 				return p_fs_id_list.join(",");
 			} else {
 				return '';
 			}
 		},
-		navparent:function(item, idx){
-			var self = this;
-		    if(!self.check_trigger()){
-		      return;
-		    }
-		    var parent = item;
-			// console.log('navparent item:', item, ',idx:', idx);
-		    
-		    // self.parent_stack = this.data.parent_stack;
-		    if(idx < self.parent_stack.length - 1){
-		      self.parent_stack.splice(idx + 1, self.parent_stack.length - idx - 1);
-			  self.reset_base_vars();
-			  self.pid = parent.fs_id;
-			  self.$router.replace({
-			  	'path': '/' + parent.fs_id,
-			  	'query':{'name': parent.name, 'source': parent.source, 'parents':self.build_parent_params()}
-			  });
-			  if(this.$refs.searchinput){
-			  	this.$refs.searchinput.clear_search_input();
-			  }
-			  this.$refs.mytags.tosearch(()=>{});
-		    }
-		  },
+		
 		click_parent(row) {
 			var self = this;
 			if (row.fs_id && self.pid != row.fs_id) {
 				self.reset_base_vars();
 				self.pid = row.fs_id;
-				self.$router.replace({
+				self.$router.push({
 					'path': '/' + row.fs_id,
 					'query':{'name': row.name, 'source': row.source, 'parents':self.build_parent_params()}
 				});
-				if(this.$refs.searchinput){
-					this.$refs.searchinput.clear_search_input();
-				}
-				this.$refs.mytags.tosearch((st)=>{
-					if(st == 0){
-						self.parent_stack.push(row);
-					}
-				});
+				// if(this.$refs.searchinput){
+				// 	this.$refs.searchinput.clear_search_input();
+				// }
+				// this.$refs.mytags.tosearch((st)=>{
+				// 	if(st == 0){
+				// 		self.parent_stack.push(row);
+				// 	}
+				// });
 			}
 			// console.log("click_parent parent row:", row);
 			// console.log("row:", row, ",column:", column, ",cell:", cell, ",event:", event);
@@ -207,6 +242,7 @@ export default {
 			if(!kw){
 				kw = '';
 			}
+			self.init_keyword = kw;
 			if(kw.length == 0 && query['kw'] && query['kw'].length>0){
 				if(kw.length == 0){
 					delete query['kw'];
@@ -221,14 +257,26 @@ export default {
 					'query': query
 				});
 			}
+			
 		},
-		to_se(e){
-			var self = this;
-			console.log("to se:", e);
-			var keyword = self.$refs.searchinput.input;
-			self.$router.push({
-				'path': '/se?kw=' + keyword
-			});
+		onSeReady(se){
+			se.select = "all";
+		},
+		onTagReady(tags){
+			if(this.init_keyword&&this.init_keyword.length>0){
+				return false;
+			} else {
+				return true;
+			}
+		},
+		go_back(e){
+			this.$router.go(-1);
+		},
+		showHighlight(val){
+			if(this.init_keyword.length>0){
+				return highlight(val, this.init_keyword, val.length);
+			}
+			return val;
 		}
 	},
 	mounted() {
@@ -238,57 +286,13 @@ export default {
 		// document.getElementById('data_container').style.height = (orderHight-151-retain) + 'px';
 		// console.log('data_container:',document.getElementById('data_container'));
 		// console.log('container h:',orderHight-151);
-		this.parent_stack.push({
-			name: "根目录",
-			path: '',
-			source:'shared',
-			dir:1,
-			fs_id:'',
-			app_name:null,
-			pin:0
-		});
-		var pid = this.$route.params.pid;
+		
 		if(this.$route.query){
 			var kw = this.$route.query.kw;
 			if(kw && kw.length>0){
 				self.init_keyword = kw;
 			}
 		}
-		if (pid && pid.match(/^\d+$/)) {
-			console.log("pid:", pid, ",query:", this.$route.query);
-			var parents_list_str = this.$route.query.parents;
-			if(pid == '0'){
-				pid = null;
-			} else {
-				this.pid = pid;
-				var pname = this.$route.query.name;
-				// console.log('parents_list:', parents_list_str);
-				if(parents_list_str && parents_list_str.length>0){
-					var parents_list = parents_list_str.split(",");
-					parents_list.forEach((fs_id, idx)=>{
-						if(fs_id.length>0){
-							this.parent_stack.push({
-								name: "上级目录",
-								path: '',
-								source:'shared',
-								dir:1,
-								fs_id:fs_id,
-								app_name:null,
-								pin:0
-							});
-						}
-					});
-				}
-				this.parent_stack.push({
-					name: pname,
-					path: '',
-					source:'shared',
-					dir:1,
-					fs_id:pid,
-					app_name:null,
-					pin:0
-				});
-			}
-		}
+		
 	}
 }

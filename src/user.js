@@ -4,6 +4,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import user from './user.vue'
 import uapp from './uapp.vue'
 import index from './App.vue'
+import se from './views/se/se.vue'
 import VueClipboard from 'vue-clipboard2'
 import VueRouter from 'vue-router'
 Vue.use(ElementUI)
@@ -25,6 +26,7 @@ const routes = [{ path: '/detail/:id', name: 'detail', component: userdetail },
 { path: '/rolelist', name: 'rolelist', component: rolelist },
 { path: '/orglist', name: 'orglist', component: orglist },
 { path: '/user', name: 'user', component: user },
+{ path: '/se', name: 'se', component: se },
 { path: '/:pid?', name: 'index', component: index }
 ];
 const router = new VueRouter({

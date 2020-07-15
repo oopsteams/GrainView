@@ -1,11 +1,16 @@
+body{
+	padding: 0 0;
+	margin: 0 0;
+}
 #app, .container{
   font-family: Helvetica, sans-serif;
   text-align: center;
-  font-size: 1.6rem;
+  min-width: 15rem;
+  /* font-size: 1.6rem; */
 }
 .common-font{
 	font-family: Helvetica, sans-serif;
-	font-size: 1.6rem;
+	/* font-size: 1.6rem; */
 }
 table {
   width: 100% !important;
@@ -25,7 +30,7 @@ table {
       }
     }
   }
-.common-input {
+/* .common-input {
 	width:15rem;
 	font-size: 1.6rem;
 }
@@ -61,6 +66,12 @@ table {
 	color: #333;
 	line-height: 3.85rem;
 	height: 3.85rem;
+} */
+.el-header{
+	padding: 0 0.125rem;
+}
+.el-main{
+	padding: 0 0.125rem;
 }
 .el-special-header {
 	height: auto;
@@ -76,4 +87,13 @@ table {
 }
 .el-transfer-panel__body .el-transfer-panel__item{
 	display: block!important;
+}
+.el-pagination.is-background .el-pager li{
+	margin: 0 0.125rem;
+}
+.el-pagination.is-background .btn-prev{
+	margin: 0 0.125rem;
+}
+.el-pagination.is-background .btn-next{
+	margin: 0 0.125rem;
 }

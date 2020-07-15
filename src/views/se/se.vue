@@ -7,39 +7,19 @@
 			<selfTag ref="mytags"></selfTag>
 		</el-header>
 	    <el-header style="height:auto;text-align: left;">
+			<el-button @click="go_back" style="margin: 0.25rem 0.3125rem;" icon="el-icon-back">返回</el-button>
 			<searchInput ref="searchinput"></searchInput>
-			<el-button @click="to_se" style="margin: 0.25rem 0.3125rem;" icon="el-icon-search">全站搜索</el-button>
-	      <!-- <el-dropdown>
-	        <i class="el-icon-setting" style="margin-right: 15px"></i>
-	        <el-dropdown-menu slot="dropdown">
-	          <el-dropdown-item>View</el-dropdown-item>
-	          <el-dropdown-item>Add</el-dropdown-item>
-	          <el-dropdown-item>Delete</el-dropdown-item>
-	        </el-dropdown-menu>
-	      </el-dropdown>
-	      <span>Tom</span> -->
-		  <!-- <el-tag v-if="sub_dir.length>0" @close="clear_sub_dir" closable type="success">{{sub_dir}}</el-tag> -->
-		  
+			
 	    </el-header>
 	    
 	    <el-main style="text-align: left;overflow: hidden;">
-			<div style="clear: both;">
-						  <el-breadcrumb separator=">">
-						    <el-breadcrumb-item v-for="(item, index) in parent_stack" :key="fs_id">
-						  	  <span style="border-bottom:1px solid #1aad19;cursor: pointer;line-height: 1.25rem;" v-if="index < parent_stack.length-1" @click="navparent(item, index)" :title="item.name" type="success">
-								{{item.name}}
-							  </span>
-						  	  <label v-else>{{item.name}}</label>
-						    </el-breadcrumb-item>
-						  </el-breadcrumb>
-			</div>
 			<el-pagination style="clear: both;" 
 			  background
 						@current-change="handleCurrentChange"
 			  layout="prev, pager, next"
 						:current-page.sync="currentPage"
 						:page-size="pageSize"
-			  :total="total" small :pager-count="5">
+			  :total="total" :pager-count="pagerCount">
 			</el-pagination>
 	      <el-table :data="tableData" stripe ref="table" v-loading="table_loading">
 	        <!-- <el-table-column prop="source" label="来源" width="110">
@@ -55,16 +35,19 @@
 					</el-breadcrumb>
 				</template>
 			</el-table-column> -->
-			<el-table-column prop="name" label="描述" min-width="75%">
+			<el-table-column prop="name" label="描述" min-width="35%" class-name="desc">
 				<template slot-scope="scope">
-					<label v-if="scope.row.pin==1" >{{scope.row.name}}</label>
-					<el-tag v-else @click.native="click_parent(scope.row)" :title="scope.row.name" type="success">{{scope.row.name}}</el-tag>
+					<span v-if="scope.row.pin==1" v-html="showHighlight(scope.row.name)"><!-- {{scope.row.name}} --></span>
+					
+					<el-tag v-else @click.native="click_parent(scope.row)" :title="scope.row.name" type="success" v-html="showHighlight(scope.row.name)"><!-- {{scope.row.name}} --></el-tag>
 				</template>
 			</el-table-column>
-			<el-table-column fixed="right" label="操作" min-width="25%">
+			<el-table-column prop="path" label="位置" min-width="35%" class-name="path">
+			</el-table-column>
+			<el-table-column fixed="right" label="操作" min-width="30%" >
 				<template slot-scope="scope">
 					<el-button v-if="scope.row.pin==1 && scope.row.source=='local'" @click="handleclick(scope.row)" type="text" size="small">获取</el-button>
-					<el-button v-else @click="showcontact(scope.row)" type="text" size="small">获取方式</el-button>
+					<el-button v-else @click="showcontact(scope.row)" type="text" size="small">获取</el-button>
 				</template>
 			</el-table-column>
 	      </el-table>
@@ -74,32 +57,17 @@
 		    layout="prev, pager, next"
 			:current-page.sync="currentPage"
 			:page-size="pageSize"
-		    :total="total" small :pager-count="5">
+		    :total="total" :pager-count="pagerCount">
 		  </el-pagination>
-		  <div style="clear: both;">
-		  			  <el-breadcrumb separator=">">
-		  			    <el-breadcrumb-item v-for="(item, index) in parent_stack" :key="fs_id">
-		  			  	  <span style="border-bottom:1px solid #1aad19;cursor: pointer;line-height: 1.25rem;" v-if="index < parent_stack.length-1" @click="navparent(item, index)" :title="item.name" type="success">
-		  					{{item.name}}
-		  				  </span>
-		  			  	  <label v-else>{{item.name}}</label>
-		  			    </el-breadcrumb-item>
-		  			  </el-breadcrumb>
-		  </div>
 	    </el-main>
-		<!-- <el-footer>
-			<div style="display: block;text-align: center;">
-				<span class="lh">©2020&nbsp;Oopsteam&nbsp;</span><span class="lh">津ICP备20003221号</span>
-			</div>
-		</el-footer> -->
 	  </el-container>
 	
 </template>
 
 <script>
-	import searchInput from './SearchInput.vue'
-	import funs from './container.js'
-	import selfTag from './Tag.vue'
+	import searchInput from '../SearchInput.vue'
+	import funs from './se.js'
+	import selfTag from '../Tag.vue'
 	export default {
 		components:{
 			searchInput,
@@ -123,6 +91,20 @@
 	font-size: 1.6rem;
 	width: 2.25rem;
 	height: 2.25rem;
+}
+.path{
+	font-size: 0.75rem;
+}
+.desc{
+	font-size: 1rem;
+}
+.el-tag{
+	font-size: 1rem;
+	height: 1.6rem;
+	line-height: 1.4rem;
+	cursor: pointer;
+	word-wrap: break-word;
+	display: inline;
 } */
 .el-message-box{
 	width: 17.5rem;
@@ -133,7 +115,5 @@
 	white-space:normal;
 	cursor: pointer;
 }
-.el-pager li{
-	margin: 0, 0.125rem;
-}
+
 </style>

@@ -2,7 +2,7 @@ export default {
 	data(){
 		return {
 		        input:'',
-				select:'shared'
+				select:'dir'
 		      };
 	},
 	methods:{
@@ -15,7 +15,8 @@ export default {
 			// console.log('startHacking self:', self);
 			// console.log('startHacking external:', self.external());
 			// self.external().reset_base_vars();
-			
+			e.target.blur();
+			self.external().currentPage = 1;
 			self.external().$refs.mytags.tosearch(()=>{
 				self.external().update_uri(self.input);
 			});
@@ -38,6 +39,9 @@ export default {
 			var kw = self.external().init_keyword;
 			if(kw && kw.length>0){
 				self.input = kw;
+			}
+			if(self.external().onSeReady){
+				self.external().onSeReady(self);
 			}
 		});
 	}
